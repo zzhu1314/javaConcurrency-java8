@@ -1,0 +1,93 @@
+server:
+  port: 3007
+spring:
+  application:
+    name: demo-rabbitmq
+  rabbitmq:
+    port: 5672
+    virtual-host: /
+    host: 175.168.1.136
+    username: root
+    password: 123456
+    template:
+      mandatory: true #在消息没有被路由到合适队列情况下会将消息返还给消息发布者
+    listener:
+      simple:
+        max-concurrency: 20
+        concurrency: 10
+        prefetch: 5
+        acknowledge-mode: MANUAL #ack不确认，#AUTO 自动确认，#MANUAL：手动确认
+  redis:
+    port: 6379
+    password: UL9yjIlykJKJE9qxj04stz651CO6+vcMc+gF4VWNqF6jiq+7bykQKMFdmLrh+3eyQhzyhAsY+1+NH1gyiWiUaA==
+    host: 175.168.1.136
+    lettuce:
+      pool:
+        max-active: 100
+        max-idle: 50
+        max-wait: -1ms #最大阻塞时间，用负值表示没有限制
+        min-idle: 0
+    database: 3
+    timeout: 6000ms
+    #集群
+    sentinel:
+      master: mymaster
+      nodes: 175.168.1.136:6379
+  datasource:
+    druid:
+      initial-size: 10
+      max-active: 50
+      min-idle: 10
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      max-pool-prepared-statement-per-connection-size: 20
+      pool-prepared-statements: true
+      filters: stat,wall,log4j,config
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000;config.decrypt=true;config.decrypt.key=${public-key}
+      filter:
+        config:
+          enabled: true
+      time-between-connect-error-millis:
+  guard:
+    datasource:
+      url:  jdbc:mysql://127.0.0.1:3306/${face.database.name}?useSSL=false&serverTimezone=Asia/Shanghai
+      username: root
+      password: UL9yjIlykJKJE9qxj04stz651CO6+vcMc+gF4VWNqF6jiq+7bykQKMFdmLrh+3eyQhzyhAsY+1+NH1gyiWiUaA==
+      driverClassName:  com.mysql.jdbc.Driver
+  jpa:
+    database: mysql
+    show-sql: true
+    properties:
+      hibernate:
+        query:
+          plan_cache_max_size:  64
+          plan_parameter_metadata_max_size: 32
+
+log:
+  user:
+    queue:
+      name: log.user.queue
+    exchange:
+      name: log.user.exchange
+    routing:
+      name: log.user.routing
+spring_redis:
+    public_key:  MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKFye1DpJBoJ8oI8IEFx8XFRwbCR0uoakOWTFh+ZXtQII/Z3bU5LnFMINLUoIMMeA7cPLkojoGpqX4sO1zciEw0CAwEAAQ==
+public-key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKFye1DpJBoJ8oI8IEFx8XFRwbCR0uoakOWTFh+ZXtQII/Z3bU5LnFMINLUoIMMeA7cPLkojoGpqX4sO1zciEw0CAwEAAQ==
+face:
+  database:
+    name: dynfacestore
+sharding-thread:
+  num:  4
+#配置rabbitmq的交换机信息
+rabbitmq:
+  fanout:
+    exchange_name:  MessageNotify.fanout
+    queue_name: queue.name
+hu:
+  ra: "{key_1: 'value1', key_2: 'value2'}"  #注入map
