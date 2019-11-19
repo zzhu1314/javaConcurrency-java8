@@ -40,7 +40,7 @@ public class ExceptionHandler {
             String message = fieldError.getDefaultMessage();
             response.setCode(400);
             response.setMessage(message);
-            LOGGER.error("field:,{} message:,{}",field,message);
+            LOGGER.error("field:{} message:{}",field,message);
         }
         return response;
     }
