@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * @Author:zhuzhou
  * @Date: 2019/11/15  17:59
- * 参数非法异常校验
+ * 方式2：参数非法异常校验（全局异常处理）
  **/
-@RestControllerAdvice
+//@RestControllerAdvice
 public class ExceptionHandler {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ExceptionHandler.class);
