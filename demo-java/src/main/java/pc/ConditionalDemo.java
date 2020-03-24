@@ -8,8 +8,9 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @Author:zhuzhou
  * @Date: 2019/9/19  14:07
+ *线程操作资源类（OOP面向对象）
  * Lock与Synchorized区别
-* 1.Synchorized 内置的java关键字，Lock是一个java类
+ * 1.Synchorized 内置的java关键字，Lock是一个java类
  * 2.Synchorized无法获取锁的状态，Lock可以判断是否获取到了锁
  * 3.Synchorized 会自动释放锁，底层是monitor，Lock必须手动释放，如果不释放，死锁
  * 4.Synchorized 可重入锁，不可中断的，非公平；Lock，可重入，公平非公平 可以自己设置
