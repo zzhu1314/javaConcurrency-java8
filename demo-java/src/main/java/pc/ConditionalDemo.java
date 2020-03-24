@@ -9,11 +9,12 @@ import java.util.concurrent.locks.ReentrantLock;
  * @Author:zhuzhou
  * @Date: 2019/9/19  14:07
  * Lock与Synchorized区别
- * 1.Locke可中断，isinterrupt.synchorized不可中断
- * 2.Lock可以绑定多个condition实现精确唤醒，synchorized不能，要么唤醒一个，要么全部唤醒
- * 3.synchorized属于jvm层面，是关键字，Lock属于api层面，是juc下的类
- * 4.synchorized会自动释放锁，底层是moniter，Lock要手动释放
- * 5synchorized是非公平锁，Lock可以设置公平还是非公平
+* 1.Synchorized 内置的java关键字，Lock是一个java类
+ * 2.Synchorized无法获取锁的状态，Lock可以判断是否获取到了锁
+ * 3.Synchorized 会自动释放锁，底层是monitor，Lock必须手动释放，如果不释放，死锁
+ * 4.Synchorized 可重入锁，不可中断的，非公平；Lock，可重入，公平非公平 可以自己设置
+ * 5.Synchorized 适合锁少量的代码同步问题，Lock适合锁大量的同步代码
+ * 6.Lock可以绑定多个Condition实现精确唤醒，Synchorized只能唤醒一个，要么全部唤醒
  **/
 public class ConditionalDemo {
     public static void main(String[] args) {
