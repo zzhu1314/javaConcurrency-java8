@@ -47,7 +47,40 @@ public class ThreadPool {
             threadPoolExecutor.execute(()-> System.out.println(Thread.currentThread().getName()));
         }
         //executor();
-
+        //只用submit,不获取返回值Future，有异常也不会抛出，主线程更无法捕获
+        try {
+            threadPoolExecutor.submit(() -> {
+                System.out.println(123);
+                int i = 1 / 0;
+                System.out.println(1234);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("捕获不到异常");
+        }
+    //用submit,且获取返回值Future，有异常会抛出，也会被主线程捕获
+        try {
+            Future<?> future = executorService.submit(() -> {
+                System.out.println(123);
+                int i = 1 / 0;
+                System.out.println(1234);
+            });
+            future.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("捕获到异常");
+        }
+        //execute执行子任务，异常会被抛出，但无法被主线程捕获
+        try {
+            executorService.execute(() -> {
+                System.out.println(123);
+                int i = 1 / 0;
+                System.out.println(1234);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("捕获不到异常");
+        }
     }
 
     private static void executor() {
